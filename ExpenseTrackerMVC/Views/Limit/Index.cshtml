@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ExpenseTrackerMVC.Models.mvcLimitModel>
+
+@{
+    ViewBag.Title = "Limit";
+}
+
+<h2>Total Expense limit</h2>
+
+<p class="add-form-btn">
+    <a href="@Url.Action("AddOrEditlim","Limit")" class="btn btn-default"><i class="fa fa-solid fa-plus"></i>Set expense limit</a>
+</p>
+<table class="table table-striped" id="listing">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                Total expense limit
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.limit_amount)
+            </td>
+            <td>
+                <a href="@Url.Action("AddOrEditlim","Limit",new {id=item.limitId})" class="btn btn-default"><i class="fa fa-pencil" id="edit"></i>Edit</a>
+                <a onclick="DeleteLim(@item.limitId)" class="btn btn-default" id="del"><i class="fa fa-trash"></i>Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+        function DeleteLim(id) {
+            alertify.confirm('Delete expense limit', 'Are you sure you want to delete this expense limit ?', function () {
+                window.location.href = '@Url.Action("DeleteLim","Limit")/' + id;
+            }, null);
+        }
+    </script>
+}
